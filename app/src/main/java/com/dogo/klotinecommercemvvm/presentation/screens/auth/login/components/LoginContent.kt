@@ -2,6 +2,7 @@ package com.dogo.klotinecommercemvvm.presentation.screens.auth.login.components
 
 import android.content.ContentValues
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,14 +36,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.dogo.klotinecommercemvvm.R
 import com.dogo.klotinecommercemvvm.presentation.components.DefaultButton
 import com.dogo.klotinecommercemvvm.presentation.components.DefaultTextField
+import com.dogo.klotinecommercemvvm.presentation.navigation.screen.AuthScreen
 import com.dogo.klotinecommercemvvm.ui.theme.Blue_500
 import com.dogo.klotinecommercemvvm.ui.theme.Blue_700
 
 @Composable
-fun LoginContent(padingValues: PaddingValues){
+fun LoginContent(navController: NavHostController, padingValues: PaddingValues){
     Box(modifier = Modifier.fillMaxSize()){
         Image(
             modifier = Modifier.fillMaxSize(),
@@ -127,6 +131,7 @@ fun LoginContent(padingValues: PaddingValues){
                         Text(text = "No tienes cuenta?")
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
+                            modifier = Modifier.clickable {navController.navigate(route = AuthScreen.Register.route)},
                             color = Blue_700,
                             text = "Registrarse")
                     }

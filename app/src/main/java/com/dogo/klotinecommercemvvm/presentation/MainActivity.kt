@@ -39,7 +39,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
 import com.dogo.klotinecommercemvvm.R
+import com.dogo.klotinecommercemvvm.presentation.navigation.graph.RootNavGraph
 import com.dogo.klotinecommercemvvm.presentation.screens.auth.login.LoginScreen
 import com.dogo.klotinecommercemvvm.ui.theme.Blue_500
 import com.dogo.klotinecommercemvvm.ui.theme.Blue_700
@@ -52,8 +54,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             KlotinEcommerceMVVMTheme {
+                val navController = rememberNavController() //  declarar aquí
                 Scaffold(modifier = Modifier.fillMaxSize()) {
-                    LoginScreen() // se llama tal cual, sin parámetros
+                    RootNavGraph(navController = navController) //  typo corregido
                 }
             }
         }
@@ -61,18 +64,18 @@ class MainActivity : ComponentActivity() {
 }
 
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    KlotinEcommerceMVVMTheme {
-        Greeting("Android")
-    }
-}
+//@Composable
+//fun Greeting(name: String, modifier: Modifier = Modifier) {
+//    Text(
+//        text = "Hello $name!",
+//        modifier = modifier
+//    )
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//fun GreetingPreview() {
+//    KlotinEcommerceMVVMTheme {
+//        Greeting("Android")
+//    }
+//}
