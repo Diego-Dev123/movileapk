@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.HistoricalChange
 import androidx.compose.ui.text.input.KeyboardType
 import com.dogo.klotinecommercemvvm.ui.theme.Blue_500
+import com.dogo.klotinecommercemvvm.ui.theme.Blue_700
 
 @Composable
 fun DefaultTextField(
@@ -37,7 +38,7 @@ fun DefaultTextField(
             Icon(
                 imageVector = icon,
                 contentDescription="",
-                tint = Blue_500
+                tint = Blue_700
             )
         },
         keyboardOptions = KeyboardOptions(keyboardType=keyboardType)
