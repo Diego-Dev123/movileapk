@@ -14,7 +14,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
@@ -25,6 +27,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,17 +42,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.dogo.klotinecommercemvvm.R
 import com.dogo.klotinecommercemvvm.presentation.components.DefaultButton
 import com.dogo.klotinecommercemvvm.presentation.components.DefaultTextField
 import com.dogo.klotinecommercemvvm.presentation.navigation.screen.AuthScreen
+import com.dogo.klotinecommercemvvm.presentation.screens.auth.login.LoginViewModel
 import com.dogo.klotinecommercemvvm.ui.theme.Blue_500
 import com.dogo.klotinecommercemvvm.ui.theme.Blue_700
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 @Composable
-fun LoginContent(navController: NavHostController, padingValues: PaddingValues){
+fun LoginContent(navController: NavHostController, padingValues: PaddingValues, vm: LoginViewModel = hiltViewModel()){
+
+    val state = vm.state
+
     Box(modifier = Modifier.fillMaxSize()){
         Image(
             modifier = Modifier.fillMaxSize(),
@@ -85,6 +97,8 @@ fun LoginContent(navController: NavHostController, padingValues: PaddingValues){
             ) {
                 Column(
                     modifier = Modifier.padding(top = 30.dp, end = 30.dp, start = 30.dp)
+                        .verticalScroll(rememberScrollState()
+                    )
                 ) {
                     Text(
                         modifier = Modifier.padding(bottom = 20.dp),
@@ -96,8 +110,10 @@ fun LoginContent(navController: NavHostController, padingValues: PaddingValues){
 
                     DefaultTextField(
                         modifier = Modifier.fillMaxWidth(),
-                        value = "",
-                        onValueChange = {},
+                        value = state.email,
+                        onValueChange = {text ->
+                            vm.onEmailInput(text)
+                        },
                         label = "Correo electronico",
                         icon = Icons.Default.Email,
                         keyboardType = KeyboardType.Email
@@ -105,11 +121,14 @@ fun LoginContent(navController: NavHostController, padingValues: PaddingValues){
 
                     DefaultTextField(
                         modifier = Modifier.fillMaxWidth(),
-                        value = "",
-                        onValueChange = {},
+                        value = state.password,
+                        onValueChange = { text ->
+                            vm.onPasswordInput(text)
+                        },
                         label = "Contrasena",
                         icon = Icons.Default.Lock,
-                        keyboardType = KeyboardType.Password
+                        keyboardType = KeyboardType.Password,
+                        hideText = true
                     )
                     Spacer(modifier = Modifier.height(20.dp))
                     //boton

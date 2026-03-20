@@ -46,7 +46,9 @@ import com.dogo.klotinecommercemvvm.presentation.screens.auth.login.LoginScreen
 import com.dogo.klotinecommercemvvm.ui.theme.Blue_500
 import com.dogo.klotinecommercemvvm.ui.theme.Blue_700
 import com.dogo.klotinecommercemvvm.ui.theme.KlotinEcommerceMVVMTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {

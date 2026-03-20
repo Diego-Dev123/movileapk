@@ -10,7 +10,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
@@ -33,13 +35,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.dogo.klotinecommercemvvm.R
 import com.dogo.klotinecommercemvvm.presentation.components.DefaultButton
 import com.dogo.klotinecommercemvvm.presentation.components.DefaultTextField
+import com.dogo.klotinecommercemvvm.presentation.screens.auth.register.RegisterViewModel
 import com.dogo.klotinecommercemvvm.ui.theme.Blue_500
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 @Composable
-fun RegisterContent(paddingValues: PaddingValues) {
+fun RegisterContent(paddingValues: PaddingValues, vm: RegisterViewModel = hiltViewModel() ) {
+
+    val state = vm.state
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -89,6 +97,8 @@ fun RegisterContent(paddingValues: PaddingValues) {
             ) {
                 Column(
                     modifier = Modifier.padding(top = 30.dp, end = 30.dp, start = 30.dp, bottom = 30.dp)
+                        .verticalScroll(rememberScrollState()
+                    )
                 ) {
                     Text(
                         modifier = Modifier.padding(bottom = 20.dp),
@@ -100,50 +110,66 @@ fun RegisterContent(paddingValues: PaddingValues) {
 
                     DefaultTextField(
                         modifier = Modifier.fillMaxWidth(),
-                        value = "",
-                        onValueChange = {},
+                        value = state.name,
+                        onValueChange = {text ->
+                            vm.onNameInput(text)
+                        },
                         label = "Nombre",
                         icon = Icons.Default.Person
                     )
 
                     DefaultTextField(
                         modifier = Modifier.fillMaxWidth(),
-                        value = "",
-                        onValueChange = {},
+                        value = state.lastName,
+                        onValueChange = {text ->
+                            vm.onLastNameInput(text)
+                        },
                         label = "Apellido",
                         icon = Icons.Outlined.Person
                     )
                     DefaultTextField(
                         modifier = Modifier.fillMaxWidth(),
-                        value = "",
-                        onValueChange = {},
+                        value = state.email,
+                        onValueChange = {text ->
+                            vm.onEmailInput(text)
+                        },
                         label = "Email",
                         icon = Icons.Default.Email,
                         keyboardType = KeyboardType.Email
                     )
                     DefaultTextField(
                         modifier = Modifier.fillMaxWidth(),
-                        value = "",
-                        onValueChange = {},
+                        value = state.phone,
+                        onValueChange = {text ->
+                            vm.onPhoneInput(text)
+                        },
                         label = "Telefono",
                         icon = Icons.Default.Phone,
                         keyboardType = KeyboardType.Number
                     )
                     DefaultTextField(
                         modifier = Modifier.fillMaxWidth(),
-                        value = "",
-                        onValueChange = {},
+                        value = state.password,
+                        onValueChange = {text ->
+                            vm.onPasswordInput(text)
+                        },
                         label = "Contrasena",
                         icon = Icons.Default.Lock,
-                        keyboardType = KeyboardType.Password
+                        keyboardType = KeyboardType.Password,
+                        hideText = true
+
                     )
                     DefaultTextField(
                         modifier = Modifier.fillMaxWidth(),
-                        value = "",
-                        onValueChange = {},
+                        value = state.confirmPassword,
+                        onValueChange = {text ->
+                            vm.onConfirmPasswordInput(text)
+                        },
                         label = "Confirma contrasena",
                         icon = Icons.Outlined.Lock,
-                        keyboardType = KeyboardType.Password
+                        keyboardType = KeyboardType.Password,
+                        hideText = true
+
                     )
                     Spacer(modifier = Modifier.height(15.dp))
                     //boton
