@@ -1,5 +1,6 @@
 package com.dogo.klotinecommercemvvm.presentation.screens.auth.register.components
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,12 +25,14 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -47,6 +50,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 fun RegisterContent(paddingValues: PaddingValues, vm: RegisterViewModel = hiltViewModel() ) {
 
     val state = vm.state
+
+    val context = LocalContext.current
+
+    LaunchedEffect(vm.MessageError) {
+        if (vm.MessageError != "") {
+            Toast.makeText(context, vm.MessageError, Toast.LENGTH_LONG).show()
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -178,7 +189,9 @@ fun RegisterContent(paddingValues: PaddingValues, vm: RegisterViewModel = hiltVi
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(50.dp),
-                        onClick = {},
+                        onClick = {
+                            vm.validateForm()
+                        },
                         text = "Registrarse",
                         color = Blue_500
                     )

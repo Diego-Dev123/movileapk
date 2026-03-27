@@ -1,6 +1,7 @@
 package com.dogo.klotinecommercemvvm.presentation.screens.auth.login.components
 
 import android.content.ContentValues
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -27,6 +28,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,6 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -55,107 +58,126 @@ import com.dogo.klotinecommercemvvm.ui.theme.Blue_700
 import dagger.hilt.android.lifecycle.HiltViewModel
 
 @Composable
-fun LoginContent(navController: NavHostController, padingValues: PaddingValues, vm: LoginViewModel = hiltViewModel()){
+fun LoginContent(navController: NavHostController, padingValues: PaddingValues, vm: LoginViewModel = hiltViewModel()) {
 
     val state = vm.state
+    val context = LocalContext.current
 
-    Box(modifier = Modifier.fillMaxSize()){
-        Image(
-            modifier = Modifier.fillMaxSize(),
-            painter = painterResource(id = R.drawable.banner),
-            contentDescription="imagen de fondo",
-            contentScale = ContentScale.Crop,
-            colorFilter = ColorFilter.colorMatrix(ColorMatrix().apply {setToScale(0.5f,0.5f,0.5f,1f)})
-        )
-        Column(
-            modifier = Modifier.fillMaxWidth().padding(top = 50.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+    LaunchedEffect(vm.MessageError) {
+        if (vm.MessageError != "") {
+            Toast.makeText(context, vm.MessageError, Toast.LENGTH_LONG).show()
+        }
+    }
+
+        Box(modifier = Modifier.fillMaxSize()) {
             Image(
-                modifier = Modifier.height(100.dp).width(100.dp),
-                painter = painterResource(id = R.drawable.shopping_cart_blue),
-                contentDescription="logo de la imagen",
+                modifier = Modifier.fillMaxSize(),
+                painter = painterResource(id = R.drawable.banner),
+                contentDescription = "imagen de fondo",
+                contentScale = ContentScale.Crop,
+                colorFilter = ColorFilter.colorMatrix(ColorMatrix().apply {
+                    setToScale(
+                        0.5f,
+                        0.5f,
+                        0.5f,
+                        1f
+                    )
+                })
             )
-            Text(
-                modifier = Modifier.padding(top = 7.dp),
-                text = "DievApp",
-                fontWeight = FontWeight.Bold,
-                color = Color.White,
-                fontSize = 20.sp
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            Card(
-                modifier = Modifier.fillMaxWidth().height(330.dp),
-                shape = RoundedCornerShape(
-                    topEnd = 30.dp,
-                    topStart = 30.dp,
-                ),
-                //color para background
-                colors = CardDefaults.cardColors(
-                    containerColor = Color.White.copy(alpha = 0.7f)
-                )
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(top = 50.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Column(
-                    modifier = Modifier.padding(top = 30.dp, end = 30.dp, start = 30.dp)
-                        .verticalScroll(rememberScrollState()
+                Image(
+                    modifier = Modifier.height(100.dp).width(100.dp),
+                    painter = painterResource(id = R.drawable.shopping_cart_blue),
+                    contentDescription = "logo de la imagen",
+                )
+                Text(
+                    modifier = Modifier.padding(top = 7.dp),
+                    text = "DievApp",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                    fontSize = 20.sp
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Card(
+                    modifier = Modifier.fillMaxWidth().height(330.dp),
+                    shape = RoundedCornerShape(
+                        topEnd = 30.dp,
+                        topStart = 30.dp,
+                    ),
+                    //color para background
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.White.copy(alpha = 0.7f)
                     )
                 ) {
-                    Text(
-                        modifier = Modifier.padding(bottom = 20.dp),
-                        text = "INGRESAR",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp,
-                        color = Color.Black
-                    )
-
-                    DefaultTextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        value = state.email,
-                        onValueChange = {text ->
-                            vm.onEmailInput(text)
-                        },
-                        label = "Correo electronico",
-                        icon = Icons.Default.Email,
-                        keyboardType = KeyboardType.Email
-                    )
-
-                    DefaultTextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        value = state.password,
-                        onValueChange = { text ->
-                            vm.onPasswordInput(text)
-                        },
-                        label = "Contrasena",
-                        icon = Icons.Default.Lock,
-                        keyboardType = KeyboardType.Password,
-                        hideText = true
-                    )
-                    Spacer(modifier = Modifier.height(20.dp))
-                    //boton
-                    DefaultButton(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(50.dp),
-                        onClick = {},
-                        text = "Login",
-                        color = Blue_700
-                    )
-                    Spacer(modifier = Modifier.height(10.dp))
-                    //texto de abajo
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center
+                    Column(
+                        modifier = Modifier.padding(top = 30.dp, end = 30.dp, start = 30.dp)
+                            .verticalScroll(
+                                rememberScrollState()
+                            )
                     ) {
-                        Text(text = "No tienes cuenta?")
-                        Spacer(modifier = Modifier.width(6.dp))
                         Text(
-                            modifier = Modifier.clickable {navController.navigate(route = AuthScreen.Register.route)},
-                            color = Blue_700,
-                            text = "Registrarse")
+                            modifier = Modifier.padding(bottom = 20.dp),
+                            text = "INGRESAR",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 20.sp,
+                            color = Color.Black
+                        )
+
+                        DefaultTextField(
+                            modifier = Modifier.fillMaxWidth(),
+                            value = state.email,
+                            onValueChange = { text ->
+                                vm.onEmailInput(text)
+                            },
+                            label = "Correo electronico",
+                            icon = Icons.Default.Email,
+                            keyboardType = KeyboardType.Email
+                        )
+
+                        DefaultTextField(
+                            modifier = Modifier.fillMaxWidth(),
+                            value = state.password,
+                            onValueChange = { text ->
+                                vm.onPasswordInput(text)
+                            },
+                            label = "Contrasena",
+                            icon = Icons.Default.Lock,
+                            keyboardType = KeyboardType.Password,
+                            hideText = true
+                        )
+                        Spacer(modifier = Modifier.height(20.dp))
+                        //boton
+                        DefaultButton(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(50.dp),
+                            onClick = {
+                                vm.validateForm()
+                            },
+                            text = "Login",
+                            color = Blue_700
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+                        //texto de abajo
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Text(text = "No tienes cuenta?")
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(
+                                modifier = Modifier.clickable { navController.navigate(route = AuthScreen.Register.route) },
+                                color = Blue_700,
+                                text = "Registrarse"
+                            )
+                        }
                     }
                 }
             }
         }
-    }
 }
+
