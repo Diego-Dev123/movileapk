@@ -1,17 +1,13 @@
 package com.dogo.klotinecommercemvvm.presentation.screens.auth.register
 
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.dogo.klotinecommercemvvm.presentation.components.DefaultTopBar
+import com.dogo.klotinecommercemvvm.presentation.screens.auth.register.components.Register
 import com.dogo.klotinecommercemvvm.presentation.screens.auth.register.components.RegisterContent
 import com.dogo.klotinecommercemvvm.ui.theme.KlotinEcommerceMVVMTheme
 
@@ -29,8 +25,8 @@ fun RegisterScreen(navController: NavHostController) {
         }
     ) { paddingValues ->
         RegisterContent(paddingValues)
-
     }
+    Register(navController)
 }
 
 @Preview(showBackground = true)

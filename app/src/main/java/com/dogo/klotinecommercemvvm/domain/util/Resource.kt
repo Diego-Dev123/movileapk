@@ -1,8 +1,8 @@
 package com.dogo.klotinecommercemvvm.domain.util
 
-sealed class Response<out T> {
+sealed class Resource<out T> {
 
-    object Loading : Response<Nothing>();
-    data class Success<out T>(val data: T) : Response<T>()
-    data class Failure(val exception: Exception) : Response<Nothing>()
+    object Loading : Resource<Nothing>();
+    data class Success<out T>(val data: T) : Resource<T>()
+    data class Failure(val message: String) : Resource<Nothing>()
 }

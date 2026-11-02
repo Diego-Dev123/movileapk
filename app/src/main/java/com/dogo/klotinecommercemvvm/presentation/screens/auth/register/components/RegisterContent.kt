@@ -47,15 +47,15 @@ import com.dogo.klotinecommercemvvm.ui.theme.Blue_500
 import dagger.hilt.android.lifecycle.HiltViewModel
 
 @Composable
-fun RegisterContent(paddingValues: PaddingValues, vm: RegisterViewModel = hiltViewModel() ) {
+fun RegisterContent(paddingValues: PaddingValues, vm: RegisterViewModel = hiltViewModel()) {
 
     val state = vm.state
-
     val context = LocalContext.current
 
     LaunchedEffect(vm.MessageError) {
         if (vm.MessageError != "") {
             Toast.makeText(context, vm.MessageError, Toast.LENGTH_LONG).show()
+            vm.MessageError = ""
         }
     }
 
@@ -64,51 +64,59 @@ fun RegisterContent(paddingValues: PaddingValues, vm: RegisterViewModel = hiltVi
             .fillMaxSize()
             .padding(paddingValues)
     ) {
+        // Fondo
         Image(
             modifier = Modifier.fillMaxSize(),
             painter = painterResource(id = R.drawable.banner),
             contentDescription = "Imagen de fondo",
             contentScale = ContentScale.Crop,
-            colorFilter = ColorFilter.colorMatrix(ColorMatrix().apply {setToScale(0.5f,0.5f,0.5f,1f)})
+            colorFilter = ColorFilter.colorMatrix(
+                ColorMatrix().apply { setToScale(0.5f, 0.5f, 0.5f, 1f) }
+            )
         )
+
+        // Contenido scrolleable completo
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),  // ← scroll aquí, no dentro del Card
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Spacer(modifier = Modifier.height(40.dp))
 
             Image(
                 modifier = Modifier
-                    .height(100.dp)
-                    .width(100.dp)
-                    .padding(top = 20.dp),
-//                modifier = Modifier.fillMaxWidth(),
+                    .height(90.dp)
+                    .width(90.dp),
                 painter = painterResource(id = R.drawable.user_image),
                 contentDescription = "logo de usuario"
             )
+
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                modifier = Modifier.padding(top = 7.dp),
                 text = "REGISTRATE CON TUS DATOS",
                 fontWeight = FontWeight.Bold,
                 color = Color.White,
-                fontSize = 20.sp
+                fontSize = 18.sp
             )
-            //formulario
-            Spacer(modifier = Modifier.height(16.dp))
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // Card que crece con el contenido
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(
-                    topEnd = 40.dp,
-                    topStart = 40.dp,
-                ),
+                shape = RoundedCornerShape(topEnd = 40.dp, topStart = 40.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = Color.White.copy(alpha = 0.85f)
+                    containerColor = Color.White.copy(alpha = 0.95f)
                 )
             ) {
                 Column(
-                    modifier = Modifier.padding(top = 30.dp, end = 30.dp, start = 30.dp, bottom = 30.dp)
-                        .verticalScroll(rememberScrollState()
+                    modifier = Modifier.padding(
+                        top = 30.dp,
+                        start = 24.dp,
+                        end = 24.dp,
+                        bottom = 40.dp
                     )
                 ) {
                     Text(
@@ -122,28 +130,21 @@ fun RegisterContent(paddingValues: PaddingValues, vm: RegisterViewModel = hiltVi
                     DefaultTextField(
                         modifier = Modifier.fillMaxWidth(),
                         value = state.name,
-                        onValueChange = {text ->
-                            vm.onNameInput(text)
-                        },
+                        onValueChange = { vm.onNameInput(it) },
                         label = "Nombre",
                         icon = Icons.Default.Person
                     )
-
                     DefaultTextField(
                         modifier = Modifier.fillMaxWidth(),
                         value = state.lastName,
-                        onValueChange = {text ->
-                            vm.onLastNameInput(text)
-                        },
+                        onValueChange = { vm.onLastNameInput(it) },
                         label = "Apellido",
                         icon = Icons.Outlined.Person
                     )
                     DefaultTextField(
                         modifier = Modifier.fillMaxWidth(),
                         value = state.email,
-                        onValueChange = {text ->
-                            vm.onEmailInput(text)
-                        },
+                        onValueChange = { vm.onEmailInput(it) },
                         label = "Email",
                         icon = Icons.Default.Email,
                         keyboardType = KeyboardType.Email
@@ -151,55 +152,42 @@ fun RegisterContent(paddingValues: PaddingValues, vm: RegisterViewModel = hiltVi
                     DefaultTextField(
                         modifier = Modifier.fillMaxWidth(),
                         value = state.phone,
-                        onValueChange = {text ->
-                            vm.onPhoneInput(text)
-                        },
-                        label = "Telefono",
+                        onValueChange = { vm.onPhoneInput(it) },
+                        label = "Teléfono",
                         icon = Icons.Default.Phone,
                         keyboardType = KeyboardType.Number
                     )
                     DefaultTextField(
                         modifier = Modifier.fillMaxWidth(),
                         value = state.password,
-                        onValueChange = {text ->
-                            vm.onPasswordInput(text)
-                        },
-                        label = "Contrasena",
+                        onValueChange = { vm.onPasswordInput(it) },
+                        label = "Contraseña",
                         icon = Icons.Default.Lock,
                         keyboardType = KeyboardType.Password,
                         hideText = true
-
                     )
                     DefaultTextField(
                         modifier = Modifier.fillMaxWidth(),
                         value = state.confirmPassword,
-                        onValueChange = {text ->
-                            vm.onConfirmPasswordInput(text)
-                        },
-                        label = "Confirma contrasena",
+                        onValueChange = { vm.onConfirmPasswordInput(it) },
+                        label = "Confirma contraseña",
                         icon = Icons.Outlined.Lock,
                         keyboardType = KeyboardType.Password,
                         hideText = true
-
                     )
-                    Spacer(modifier = Modifier.height(15.dp))
-                    //boton
+
+                    Spacer(modifier = Modifier.height(24.dp))
 
                     DefaultButton(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(50.dp),
-                        onClick = {
-                            vm.validateForm()
-                        },
+                        onClick = { vm.register() },
                         text = "Registrarse",
                         color = Blue_500
                     )
-
                 }
-
             }
-
         }
     }
 }

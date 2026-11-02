@@ -51,7 +51,7 @@ import androidx.navigation.NavHostController
 import com.dogo.klotinecommercemvvm.R
 import com.dogo.klotinecommercemvvm.presentation.components.DefaultButton
 import com.dogo.klotinecommercemvvm.presentation.components.DefaultTextField
-import com.dogo.klotinecommercemvvm.presentation.navigation.screen.AuthScreen
+import com.dogo.klotinecommercemvvm.presentation.navigation.screen.auth.AuthScreen
 import com.dogo.klotinecommercemvvm.presentation.screens.auth.login.LoginViewModel
 import com.dogo.klotinecommercemvvm.ui.theme.Blue_500
 import com.dogo.klotinecommercemvvm.ui.theme.Blue_700
@@ -66,6 +66,7 @@ fun LoginContent(navController: NavHostController, padingValues: PaddingValues, 
     LaunchedEffect(vm.MessageError) {
         if (vm.MessageError != "") {
             Toast.makeText(context, vm.MessageError, Toast.LENGTH_LONG).show()
+            vm.MessageError = ""
         }
     }
 
@@ -155,7 +156,7 @@ fun LoginContent(navController: NavHostController, padingValues: PaddingValues, 
                                 .fillMaxWidth()
                                 .height(50.dp),
                             onClick = {
-                                vm.validateForm()
+                                vm.login()
                             },
                             text = "Login",
                             color = Blue_700
