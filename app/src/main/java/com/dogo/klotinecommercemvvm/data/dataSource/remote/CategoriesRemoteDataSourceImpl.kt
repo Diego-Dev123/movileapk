@@ -3,6 +3,7 @@ package com.dogo.klotinecommercemvvm.data.dataSource.remote
 
 import com.dogo.klotinecommercemvvm.data.dataSource.remote.service.CategoriesService
 import com.dogo.klotinecommercemvvm.domain.model.Category
+import com.dogo.klotinecommercemvvm.domain.model.TrashedCategory
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -56,6 +57,10 @@ class CategoriesRemoteDataSourceImpl(private val categoryService: CategoriesServ
     override suspend fun delete(id: String): Response<Unit> = categoryService.delete(id)
 
     override suspend fun getCategories(): Response<List<Category>> = categoryService.getCategories()
+
+    override suspend fun getTrash(): Response<List<TrashedCategory>> = categoryService.getTrash()
+
+    override suspend fun restore(id: String): Response<Category> = categoryService.restore(id)
 
 
 }

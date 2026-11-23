@@ -3,6 +3,7 @@ package com.dogo.klotinecommercemvvm.id
 import android.app.Application
 import androidx.room.Room
 import com.dogo.klotinecommercemvvm.data.dataSource.local.dao.CategoriesDao
+import com.dogo.klotinecommercemvvm.data.dataSource.local.dao.ProductsDao
 import com.dogo.klotinecommercemvvm.data.dataSource.local.db.EcommerceDB
 import dagger.Module
 import dagger.Provides
@@ -24,4 +25,9 @@ object DataBaseModule {
     @Provides
     @Singleton
     fun provideCategoryDao(db: EcommerceDB): CategoriesDao = db.categoryDao()
+
+
+    @Provides
+    @Singleton
+    fun provideProdcutsDao(db: EcommerceDB): ProductsDao = db.productDao()
 }

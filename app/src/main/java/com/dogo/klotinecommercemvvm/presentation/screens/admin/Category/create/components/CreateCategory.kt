@@ -1,99 +1,31 @@
 package com.dogo.klotinecommercemvvm.presentation.screens.admin.Category.create.components
 
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import com.dogo.klotinecommercemvvm.domain.util.Resource
+import com.dogo.klotinecommercemvvm.presentation.components.LocalAppMessenger
+import com.dogo.klotinecommercemvvm.presentation.components.MessageType
 import com.dogo.klotinecommercemvvm.presentation.components.ProgressBar
-import com.dogo.klotinecommercemvvm.presentation.navigation.Graph
-import com.dogo.klotinecommercemvvm.presentation.navigation.screen.auth.AuthScreen
 import com.dogo.klotinecommercemvvm.presentation.screens.admin.Category.create.AdminCategoryCreateViewModel
-import com.dogo.klotinecommercemvvm.presentation.screens.auth.login.LoginViewModel
-import com.dogo.klotinecommercemvvm.presentation.screens.profile.update.ProfileUpdateViewModel
 
 
 @Composable
-fun CreateCategory(vm: AdminCategoryCreateViewModel= hiltViewModel()){
+fun CreateCategory(vm: AdminCategoryCreateViewModel = hiltViewModel()){
+    val messenger = LocalAppMessenger.current
     when(val response = vm.categoryResponse){
-
-        //retornar cuando la repsusta este cargando
-        Resource.Loading ->{
-            ProgressBar()
-        }
-
-        //cuando la respuesta es exitosa
-        is Resource.Success -> {
-            Log.d("Creater", "update: ${response.data}")
+        Resource.Loading -> ProgressBar()
+        is Resource.Success -> LaunchedEffect(response) {
+            messenger.show("Categoría creada", MessageType.Success)
             vm.clearForm()
-            Toast.makeText(LocalContext.current, "Categoria Creada", Toast.LENGTH_LONG).show()
-
         }
-
-        //cuando falla
-        is Resource.Failure ->{
-            Toast.makeText(LocalContext.current, response.message, Toast.LENGTH_SHORT).show()
+        is Resource.Failure -> LaunchedEffect(response) {
+            messenger.show(response.message, MessageType.Error)
         }
-
-
-        //else por si hay un error desconocido
-        else -> {
-            if(response != null){
-                Toast.makeText(LocalContext.current, "Error desconocido", Toast.LENGTH_SHORT).show()
+        else -> if (response != null) {
+            LaunchedEffect(response) {
+                messenger.show("Error desconocido", MessageType.Error)
             }
         }
-
-
     }
 }
-
-
-
-
-//@Composable
-//fun Login(navController: NavHostController, vm: LoginViewModel = hiltViewModel()) {
-//    val context = LocalContext.current
-//
-//    when (val response = vm.loginResponse) {
-//
-//        Resource.Loading -> {
-//            ProgressBar()
-//        }
-//
-//        is Resource.Success -> {
-//            LaunchedEffect(Unit) {
-//                val data = response.data
-//                if (data == null) {
-//                    Toast.makeText(context, "Error: respuesta vacía", Toast.LENGTH_SHORT).show()
-//                    return@LaunchedEffect
-//                }
-//
-//                vm.saveSession(data)
-//
-//                val roles = data.user?.roles ?: emptyList()
-//                val destination = if (roles.size > 1) {
-//                    AuthScreen.Roles.route
-//                } else {
-//                    AuthScreen.Home.route
-//                }
-//
-//                navController.navigate(destination) {
-//                    popUpTo(AuthScreen.Login.route) { inclusive = true }
-//                }
-//            }
-//        }
-//
-//        is Resource.Failure -> {
-//            Toast.makeText(context, response.message, Toast.LENGTH_SHORT).show()
-//        }
-//
-//        else -> {
-//            if (response != null) {
-//                Toast.makeText(context, "Error desconocido", Toast.LENGTH_SHORT).show()
-//            }
-//        }
-//    }
-//}

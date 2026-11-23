@@ -25,6 +25,9 @@ class LoginViewModel @Inject constructor(private val authUseCase: AuthUseCase): 
 
     var loginResponse by mutableStateOf <Resource <AuthResponse>?>(null)
 
+    var checkingSession by mutableStateOf(true)
+        private set
+
     init {
         getSessionData()
     }
@@ -34,6 +37,7 @@ class LoginViewModel @Inject constructor(private val authUseCase: AuthUseCase): 
             if(!data.token.isNullOrBlank()){
                 loginResponse = Resource.Success(data)
             }
+            checkingSession = false
         }
     }
 

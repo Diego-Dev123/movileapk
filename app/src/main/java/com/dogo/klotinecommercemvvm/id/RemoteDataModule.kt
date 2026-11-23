@@ -5,9 +5,12 @@ import com.dogo.klotinecommercemvvm.data.dataSource.remote.CategoryRemoteDataSou
 import com.dogo.klotinecommercemvvm.data.dataSource.remote.UsersRemoteDataSource
 import com.dogo.klotinecommercemvvm.data.dataSource.remote.AuthRemoteDataSourceImpl
 import com.dogo.klotinecommercemvvm.data.dataSource.remote.CategoriesRemoteDataSourceImpl
+import com.dogo.klotinecommercemvvm.data.dataSource.remote.ProductsRemoteDataSource
+import com.dogo.klotinecommercemvvm.data.dataSource.remote.ProductsRemoteDataSourceImpl
 import com.dogo.klotinecommercemvvm.data.dataSource.remote.UsersRemoteDataSourceImpl
 import com.dogo.klotinecommercemvvm.data.dataSource.remote.service.AuthService
 import com.dogo.klotinecommercemvvm.data.dataSource.remote.service.CategoriesService
+import com.dogo.klotinecommercemvvm.data.dataSource.remote.service.ProductService
 import com.dogo.klotinecommercemvvm.data.dataSource.remote.service.UsersService
 import dagger.Module
 import dagger.Provides
@@ -30,6 +33,9 @@ object RemoteDataModule {
     fun provideCategoryRemoteDataSource(categoryService: CategoriesService): CategoryRemoteDataSource =
         CategoriesRemoteDataSourceImpl(categoryService)
 
+    @Provides
+    fun provideProductRemoteDataSource(productService: ProductService): ProductsRemoteDataSource =
+        ProductsRemoteDataSourceImpl(productService)
 
 
 }

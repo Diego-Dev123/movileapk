@@ -21,7 +21,7 @@ fun ClientCategoryListContent(
     LazyColumn(
         modifier = Modifier
             .padding(paddingValues= paddingValues)
-            .padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 55.dp)
+            .padding(bottom = 55.dp)
     ) {
         items(
             items = categories

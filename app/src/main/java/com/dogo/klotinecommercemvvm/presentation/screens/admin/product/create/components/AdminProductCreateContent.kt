@@ -77,6 +77,7 @@ fun AdminProductCreateContent(paddingValues: PaddingValues, vm: AdminProductCrea
                         .size(125.dp)
                         .clip(CircleShape)
                         .clickable {
+                            stateDialogImageNumber.value = 1
                             stateDialog.value = true
                         },
                     model = state.image1,
@@ -86,7 +87,7 @@ fun AdminProductCreateContent(paddingValues: PaddingValues, vm: AdminProductCrea
                 Image(
                     modifier = Modifier
                         .size(125.dp)
-                        .clip(CircleShape)
+                        .clip(RoundedCornerShape(20.dp))
                         .clickable {
                             stateDialog.value = true
                             stateDialogImageNumber.value = 1
@@ -105,6 +106,7 @@ fun AdminProductCreateContent(paddingValues: PaddingValues, vm: AdminProductCrea
                         .size(125.dp)
                         .clip(CircleShape)
                         .clickable {
+                            stateDialogImageNumber.value = 2
                             stateDialog.value = true
                         },
                     model = state.image2,
@@ -114,7 +116,7 @@ fun AdminProductCreateContent(paddingValues: PaddingValues, vm: AdminProductCrea
                 Image(
                     modifier = Modifier
                         .size(125.dp)
-                        .clip(CircleShape)
+                        .clip(RoundedCornerShape(20.dp))
                         .clickable {
                             stateDialog.value = true
                             stateDialogImageNumber.value = 2
@@ -190,7 +192,7 @@ fun AdminProductCreateContent(paddingValues: PaddingValues, vm: AdminProductCrea
                 DefaultButton(
                     modifier = Modifier.fillMaxWidth(),
                     text = "Crear producto",
-                    onClick = { }
+                    onClick = {vm.createProduct()}
                 )
 
             }

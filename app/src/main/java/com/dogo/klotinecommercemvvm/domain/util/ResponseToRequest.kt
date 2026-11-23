@@ -13,7 +13,7 @@ object ResponseToRequest {
                 Resource.Success(result.body()!!)
             } else{
                 val errorResponse: ErrorResponse? = ConvertErrorBody.convert(result.errorBody())
-                Resource.Failure(errorResponse?.message ?:"Error desconocido")
+                Resource.Failure(errorResponse?.message ?:"Error desconocido", result.code())
             }
 
 

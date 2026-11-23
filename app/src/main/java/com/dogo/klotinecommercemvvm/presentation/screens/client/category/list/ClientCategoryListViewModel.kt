@@ -9,6 +9,7 @@ import com.dogo.klotinecommercemvvm.domain.model.Category
 import com.dogo.klotinecommercemvvm.domain.useCase.categories.CategoriesUseCase
 import com.dogo.klotinecommercemvvm.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,10 +23,15 @@ class ClientCategoryListViewModel @Inject constructor(private val categoriesUseC
         getCategories()
     }
 
-    fun getCategories() = viewModelScope.launch {
-        categoriesResponse = Resource.Loading
-        categoriesUseCase.getCategories().collect() {
-            categoriesResponse = it
+    private var job: Job? = null
+
+    fun getCategories() {
+        job?.cancel()
+        job = viewModelScope.launch {
+            if (categoriesResponse !is Resource.Success) categoriesResponse = Resource.Loading
+            categoriesUseCase.getCategories().collect {
+                categoriesResponse = it
+            }
         }
     }
 }

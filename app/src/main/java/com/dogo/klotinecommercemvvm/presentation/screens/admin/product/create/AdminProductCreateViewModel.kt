@@ -8,9 +8,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dogo.klotinecommercemvvm.domain.model.Category
+import com.dogo.klotinecommercemvvm.domain.model.Product
+import com.dogo.klotinecommercemvvm.domain.useCase.products.ProductsUseCase
 import com.dogo.klotinecommercemvvm.domain.util.Resource
 import com.dogo.klotinecommercemvvm.presentation.screens.admin.Category.create.AdminCategoryCreateState
 import com.dogo.klotinecommercemvvm.presentation.screens.admin.Category.create.mapper.toCategory
+import com.dogo.klotinecommercemvvm.presentation.screens.admin.product.create.mapper.toProduct
 import com.dogo.klotinecommercemvvm.presentation.util.ComposeFileProvider
 import com.dogo.klotinecommercemvvm.presentation.util.ResultingActivityHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,14 +25,15 @@ import javax.inject.Inject
 @HiltViewModel
 class AdminProductCreateViewModel @Inject constructor(
     @ApplicationContext val context: Context,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val productsUseCase: ProductsUseCase
 ): ViewModel() {
 
 
     var state by mutableStateOf(AdminProductCreateState())
         private set
 
-    var categoryResponse by mutableStateOf<Resource<Category>?> (null)
+    var productResponse by mutableStateOf<Resource<Product>?> (null)
         private set
 
     var data = savedStateHandle.get<String>("category")
@@ -38,7 +42,23 @@ class AdminProductCreateViewModel @Inject constructor(
     //imagenes
     var file1: File? = null
     var file2: File? = null
+    var files: List<File> = listOf()
     val resultingActivityHandler = ResultingActivityHandler()
+
+    init {
+        state = state.copy(idCategory = category.id?:"")
+    }
+
+    //crear
+    fun createProduct() = viewModelScope.launch{
+        if (file1 != null && file2 != null){
+            files = listOf(file1!!, file2!!)
+            productResponse = Resource.Loading
+            val result = productsUseCase.createProduct(state.toProduct(),files)
+            productResponse = result
+        }
+
+    }
 
     fun clearForm(){
         state = state.copy(
@@ -48,7 +68,7 @@ class AdminProductCreateViewModel @Inject constructor(
             image2 = "",
             price = 0.0
         )
-        categoryResponse = null
+        productResponse = null
     }
 
     //selecionar desde galeria

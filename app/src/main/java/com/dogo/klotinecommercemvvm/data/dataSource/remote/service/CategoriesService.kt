@@ -1,6 +1,7 @@
 package com.dogo.klotinecommercemvvm.data.dataSource.remote.service
 
 import com.dogo.klotinecommercemvvm.domain.model.Category
+import com.dogo.klotinecommercemvvm.domain.model.TrashedCategory
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -55,11 +56,21 @@ interface CategoriesService {
         @Part("description") description: RequestBody,
     ): Response<Category>
 
-    //eliminar una categoria
+    //eliminar una categoria (borrado lógico: el backend la mueve a la papelera)
     @DELETE("categories/{id}")
     suspend fun delete(
         @Path("id") id: String,
     ): Response<Unit>
+
+    //papelera: categorías eliminadas (solo ADMIN)
+    @GET("categories/trash")
+    suspend fun getTrash(): Response<List<TrashedCategory>>
+
+    //restaurar una categoría de la papelera (solo ADMIN)
+    @PUT("categories/{id}/restore")
+    suspend fun restore(
+        @Path("id") id: String,
+    ): Response<Category>
 
 
 }

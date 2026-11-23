@@ -13,6 +13,7 @@ fun AdminButtonBar(navController: NavHostController){
     val screens = listOf(
        // AdminScreen.productList,
         AdminScreen.categoryList,
+        AdminScreen.trash,
         AdminScreen.profile
     )
 

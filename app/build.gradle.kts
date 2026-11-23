@@ -96,6 +96,10 @@ dependencies {
     implementation("io.coil-kt.coil3:coil-compose:3.4.0")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.4.0")
 
+    //pager (carrusel de imagenes)
+    implementation("com.google.accompanist:accompanist-pager:0.22.0-rc")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.22.0-rc")
+
 
     //file transformatiioon
     implementation("commons-io:commons-io:2.11.0")

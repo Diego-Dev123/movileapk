@@ -5,13 +5,14 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import com.dogo.klotinecommercemvvm.presentation.screens.client.category.list.components.ClientCategoryListContent
 import com.dogo.klotinecommercemvvm.presentation.screens.client.product.list.components.ClientProductListContent
+import com.dogo.klotinecommercemvvm.presentation.screens.client.product.list.components.GetProducts
 
 
 @Composable
-fun ClientProductListScreen(){
+fun ClientProductListScreen(navController: NavHostController){
 
 
     Scaffold() {paddingValues ->
-        ClientProductListContent(paddingValues =paddingValues )
+        GetProducts(navController = navController, paddingValues = paddingValues)
     }
 }

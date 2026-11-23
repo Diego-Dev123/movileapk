@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import com.dogo.klotinecommercemvvm.presentation.components.DefaultTopBar
 import com.dogo.klotinecommercemvvm.presentation.screens.admin.product.create.components.AdminProductCreateContent
+import com.dogo.klotinecommercemvvm.presentation.screens.admin.product.create.components.CreateProduct
 import com.dogo.klotinecommercemvvm.ui.theme.Gris200
 
 @Composable
@@ -26,4 +27,5 @@ fun AdminProductCreateScreen(navController: NavHostController, categoryParam : S
         AdminProductCreateContent(paddingValues = paddingValues)
     }
 
+    CreateProduct()
 }

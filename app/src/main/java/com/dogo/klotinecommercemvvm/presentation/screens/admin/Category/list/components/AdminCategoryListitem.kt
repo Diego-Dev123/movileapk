@@ -2,107 +2,55 @@ package com.dogo.klotinecommercemvvm.presentation.screens.admin.Category.list.co
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Divider
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import coil3.compose.AsyncImage
 import com.dogo.klotinecommercemvvm.R
 import com.dogo.klotinecommercemvvm.domain.model.Category
+import com.dogo.klotinecommercemvvm.presentation.components.CardActionButton
+import com.dogo.klotinecommercemvvm.presentation.components.ItemCard
+import androidx.compose.ui.graphics.Color
 import com.dogo.klotinecommercemvvm.presentation.navigation.screen.admin.AdminCategoryScreen
-import com.dogo.klotinecommercemvvm.presentation.screens.admin.Category.list.AdminCategoryListViewModel
 
 @Composable
-fun AdminCategoryListItem(navController: NavHostController,category: Category, vm: AdminCategoryListViewModel = hiltViewModel()){
-
-    Column(
-        Modifier
-            .padding(start = 20.dp, end = 20.dp, top = 15.dp)
-            .height(90.dp)
-            .clickable {
-                navController.navigate(route = AdminCategoryScreen.ProductList.passCategory(category.toJson()))
-            }
-    ) {
-
-
-
-        Row() {
-            AsyncImage(
-                modifier = Modifier.size(70.dp).clip(RoundedCornerShape(10.dp)),
-                model = category.image,
-                contentDescription = "",
-            )
-            Spacer(modifier = Modifier.width(15.dp))
+fun AdminCategoryListItem(navController: NavHostController, category: Category, onDelete: (Category) -> Unit){
+    ItemCard(
+        image = category.image,
+        title = category.name,
+        description = category.description,
+        onClick = {
+            navController.navigate(route = AdminCategoryScreen.ProductList.passCategory(category.toJson()))
+        },
+        actions = {
             Column(
-                Modifier.weight(1f)
+                modifier = Modifier.padding(start = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
-                //nombre de la categoria
-                Text(
-                    text = category.name,
-                    color = Color.Black,
-                    fontSize = 17.sp
+                //editar
+                CardActionButton(
+                    iconRes = R.drawable.edit,
+                    tint = Color(0xFF4F46E5),
+                    onClick = {
+                        navController.navigate(route = AdminCategoryScreen.CategoryUpdate.passCategory(category.toJson()))
+                    }
                 )
-
-                Spacer(modifier = Modifier.height(5.dp))
-                //descripcion de la cateogria
-                Text(
-                    text = category.description,
-                    color = Color.Gray,
-                    fontSize = 14.sp
-                )
-
-            }
-
-            Spacer(modifier = Modifier.width(15.dp))
-            //logos de editar y eliminar
-            Column(
-                verticalArrangement = Arrangement.Center
-            ) {
-
-                //imagen de editar
-                Image(
-                    modifier = Modifier
-                        .size(25.dp)
-                        .clickable{
-                            navController.navigate(route = AdminCategoryScreen.CategoryUpdate.passCategory(category.toJson()))
-                        },
-                    painter = painterResource(id = R.drawable.edit),
-                    contentDescription = ""
-                )
-                Spacer(modifier = Modifier.height(5.dp))
-                //imagen de eliminar
-                Image(
-                    modifier = Modifier.size(25.dp).clickable {
-                        vm.deleteCategories(category.id!!)
-                    },
-                    painter = painterResource(id = R.drawable.trash),
-                    contentDescription = ""
+                //eliminar
+                CardActionButton(
+                    iconRes = R.drawable.trash,
+                    tint = Color(0xFFDC2626),
+                    onClick = {
+                        onDelete(category)
+                    }
                 )
             }
-
-
         }
-        Spacer(modifier = Modifier.height(10.dp))
-        Divider(
-            modifier = Modifier.padding(start = 30.dp),
-            color = Color.LightGray
-        )
-
-    }
+    )
 }

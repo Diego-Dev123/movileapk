@@ -14,12 +14,24 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+data class RegisterErrors(
+    val name: String? = null,
+    val lastName: String? = null,
+    val email: String? = null,
+    val phone: String? = null,
+    val password: String? = null,
+    val confirmPassword: String? = null
+)
+
 @HiltViewModel
 class RegisterViewModel @Inject constructor(private val authUseCase: AuthUseCase): ViewModel() {
     var state by mutableStateOf(RegisterState())
         private set
 
     var MessageError by mutableStateOf("")
+
+    var errors by mutableStateOf(RegisterErrors())
+        private set
     var registerResponse by mutableStateOf<Resource<AuthResponse>?>(null)
         private set
 
@@ -38,66 +50,51 @@ class RegisterViewModel @Inject constructor(private val authUseCase: AuthUseCase
 
     fun onNameInput(input: String){
         state = state.copy(name = input)
+        errors = errors.copy(name = null)
     }
     fun onLastNameInput(input: String){
         state = state.copy(lastName = input)
+        errors = errors.copy(lastName = null)
     }
     fun onEmailInput(input: String){
         state = state.copy(email = input)
+        errors = errors.copy(email = null)
     }
     fun onPhoneInput(input: String){
         state = state.copy(phone = input)
+        errors = errors.copy(phone = null)
     }
     fun onPasswordInput(input: String){
         state = state.copy(password = input)
+        errors = errors.copy(password = null)
     }
     fun onConfirmPasswordInput(input: String){
         state = state.copy(confirmPassword = input)
+        errors = errors.copy(confirmPassword = null)
     }
 
     fun IsvalidateForm(): Boolean {
-        if (state.name == ""){
-            MessageError = "Ingresa el nombre!"
-            return false
-        }
-        else if (state.lastName == ""){
-            MessageError = "Ingresa el apellido!"
-            return false
-        }
-        else if (state.email == ""){
-            MessageError = "Ingresa el email!"
-            return false
-        }
-        else if (state.phone == ""){
-            MessageError = "Ingresa el telefono!"
-            return false
-        }
-
-        else if (state.password == ""){
-            MessageError = "Ingresa la contrasena"
-            return false
-        }
-        else if (state.confirmPassword == ""){
-            MessageError = "Ingresa la confirmacion de contrasena"
-            return false
-        }
-
-
-        else if (!Patterns.EMAIL_ADDRESS.matcher(state.email).matches()) {
-            MessageError = "El email no es valido"
-            return false
-        } else if (state.password.length < 6) {
-            MessageError = "La contraseña debe tener al menos 6 caracteres"
-            return false
-
-        }
-        else if (state.password != state.confirmPassword) {
-            MessageError = "Las contraseñas no coinciden"
-            return false
-        }
-        return true
-
+        val result = RegisterErrors(
+            name = if (state.name == "") "Ingresa el nombre!" else null,
+            lastName = if (state.lastName == "") "Ingresa el apellido!" else null,
+            email = when {
+                state.email == "" -> "Ingresa el email!"
+                !Patterns.EMAIL_ADDRESS.matcher(state.email).matches() -> "El email no es valido"
+                else -> null
+            },
+            phone = if (state.phone == "") "Ingresa el telefono!" else null,
+            password = when {
+                state.password == "" -> "Ingresa la contrasena"
+                state.password.length < 6 -> "La contraseña debe tener al menos 6 caracteres"
+                else -> null
+            },
+            confirmPassword = when {
+                state.confirmPassword == "" -> "Ingresa la confirmacion de contrasena"
+                state.password != state.confirmPassword -> "Las contraseñas no coinciden"
+                else -> null
+            }
+        )
+        errors = result
+        return result == RegisterErrors()
     }
-
-
 }
