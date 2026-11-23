@@ -1,6 +1,7 @@
 # KlotinEcommerceMVVM
 
 Aplicación Android de comercio electrónico con dos perfiles: **cliente** (explora el catálogo) y **administrador** (gestiona categorías y productos). Está hecha con Kotlin y Jetpack Compose, siguiendo una arquitectura MVVM por capas.
+https://github.com/Diego-Dev123/movileapk/blob/main/img.png
 
 
 ## Funcionalidades
