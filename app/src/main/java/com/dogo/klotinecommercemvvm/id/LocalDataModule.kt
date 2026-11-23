@@ -5,7 +5,10 @@ import com.dogo.klotinecommercemvvm.data.dataSource.local.AuthLocalDataSource
 import com.dogo.klotinecommercemvvm.data.dataSource.local.AuthLocalDataSourceImpl
 import com.dogo.klotinecommercemvvm.data.dataSource.local.CategoriesLocalDataSource
 import com.dogo.klotinecommercemvvm.data.dataSource.local.CategoriesLocalDataSourceImpl
+import com.dogo.klotinecommercemvvm.data.dataSource.local.ProductsLocalDataSource
+import com.dogo.klotinecommercemvvm.data.dataSource.local.ProductsLocalDataSourceImpl
 import com.dogo.klotinecommercemvvm.data.dataSource.local.dao.CategoriesDao
+import com.dogo.klotinecommercemvvm.data.dataSource.local.dao.ProductsDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,4 +26,9 @@ object LocalDataModule {
     @Provides
     fun providesCategoriesLocalDataSOurce(categoriesDao: CategoriesDao): CategoriesLocalDataSource =
         CategoriesLocalDataSourceImpl(categoriesDao)
+
+
+    @Provides
+    fun providesProductsLocalDataSource(productsDao: ProductsDao): ProductsLocalDataSource =
+        ProductsLocalDataSourceImpl(productsDao)
 }

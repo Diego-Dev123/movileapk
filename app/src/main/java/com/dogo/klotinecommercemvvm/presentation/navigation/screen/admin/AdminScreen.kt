@@ -1,6 +1,7 @@
 package com.dogo.klotinecommercemvvm.presentation.navigation.screen.admin
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ThumbUp
@@ -23,6 +24,12 @@ sealed class AdminScreen(
 //        title = "Productos",
 //        icon = Icons.Default.ThumbUp
 //    )
+    object trash: AdminScreen(
+        route = "admin/trash",
+        title = "Papelera",
+        icon = Icons.Default.Delete
+    )
+
     object profile: AdminScreen(
         route = "admin/profile",
         title = "Perfil",

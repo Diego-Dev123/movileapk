@@ -50,11 +50,16 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.dogo.klotinecommercemvvm.R
 import com.dogo.klotinecommercemvvm.presentation.components.DefaultButton
+import com.dogo.klotinecommercemvvm.domain.util.Resource
+import com.dogo.klotinecommercemvvm.presentation.components.AuthButton
 import com.dogo.klotinecommercemvvm.presentation.components.DefaultTextField
+import com.dogo.klotinecommercemvvm.presentation.components.JumpingCart
 import com.dogo.klotinecommercemvvm.presentation.navigation.screen.auth.AuthScreen
 import com.dogo.klotinecommercemvvm.presentation.screens.auth.login.LoginViewModel
 import com.dogo.klotinecommercemvvm.ui.theme.Blue_500
 import com.dogo.klotinecommercemvvm.ui.theme.Blue_700
+import com.dogo.klotinecommercemvvm.ui.theme.Blue_800
+import com.dogo.klotinecommercemvvm.ui.theme.grisOscuro
 import dagger.hilt.android.lifecycle.HiltViewModel
 
 @Composable
@@ -89,11 +94,7 @@ fun LoginContent(navController: NavHostController, padingValues: PaddingValues, 
                 modifier = Modifier.fillMaxWidth().padding(top = 50.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Image(
-                    modifier = Modifier.height(100.dp).width(100.dp),
-                    painter = painterResource(id = R.drawable.shopping_cart_blue),
-                    contentDescription = "logo de la imagen",
-                )
+                JumpingCart(size = 100.dp)
                 Text(
                     modifier = Modifier.padding(top = 7.dp),
                     text = "DievApp",
@@ -147,19 +148,15 @@ fun LoginContent(navController: NavHostController, padingValues: PaddingValues, 
                             label = "Contrasena",
                             icon = Icons.Default.Lock,
                             keyboardType = KeyboardType.Password,
-                            hideText = true
+                            hideText = true,
+                            showPasswordToggle = true
                         )
                         Spacer(modifier = Modifier.height(20.dp))
                         //boton
-                        DefaultButton(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(50.dp),
-                            onClick = {
-                                vm.login()
-                            },
-                            text = "Login",
-                            color = Blue_700
+                        AuthButton(
+                            text = "Iniciar sesión",
+                            loading = vm.loginResponse is Resource.Loading,
+                            onClick = { vm.login() }
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                         //texto de abajo
@@ -168,11 +165,12 @@ fun LoginContent(navController: NavHostController, padingValues: PaddingValues, 
                                 .fillMaxWidth(),
                             horizontalArrangement = Arrangement.Center
                         ) {
-                            Text(text = "No tienes cuenta?")
+                            Text(text = "No tienes cuenta?", color = grisOscuro)
                             Spacer(modifier = Modifier.width(6.dp))
                             Text(
                                 modifier = Modifier.clickable { navController.navigate(route = AuthScreen.Register.route) },
-                                color = Blue_700,
+                                color = Blue_800,
+                                fontWeight = FontWeight.Bold,
                                 text = "Registrarse"
                             )
                         }

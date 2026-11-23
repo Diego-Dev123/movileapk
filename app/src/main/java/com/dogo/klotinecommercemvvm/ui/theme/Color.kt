@@ -13,4 +13,8 @@ val Pink40 = Color(0xFF7D5260)
 val Teal_500 = Color(0xFF4ECE8D)
 val Blue_500 = Color(0xFF48ABEC)
 val Blue_700 = Color(0xFF47D3D5)
+val Blue_800 = Color(0xFF1A73B0)
+val RolesBackground = listOf(Color(0xFFE3F4FB), Color(0xFFF7FCFE), Color(0xFFE6F7EE))
 val Gris200 = Color(0xFFC2C1C1)
+
+val grisOscuro = Color(0xFF3B3B3F)

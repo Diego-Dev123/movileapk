@@ -9,6 +9,7 @@ import com.dogo.klotinecommercemvvm.presentation.navigation.graph.profile.Profil
 import com.dogo.klotinecommercemvvm.presentation.navigation.screen.admin.AdminScreen
 import com.dogo.klotinecommercemvvm.presentation.screens.admin.Category.list.AdminCategoryListScreen
 import com.dogo.klotinecommercemvvm.presentation.screens.admin.product.list.AdminProductListScreen
+import com.dogo.klotinecommercemvvm.presentation.screens.admin.trash.AdminTrashScreen
 import com.dogo.klotinecommercemvvm.presentation.screens.profile.info.ProfileScreen
 
 @Composable
@@ -23,6 +24,9 @@ fun AdminNavGraph(navController: NavHostController){
 //        }
         composable(route = AdminScreen.categoryList.route){
             AdminCategoryListScreen(navController)
+        }
+        composable(route = AdminScreen.trash.route){
+            AdminTrashScreen()
         }
         composable(route = AdminScreen.profile.route){
             ProfileScreen(navController)

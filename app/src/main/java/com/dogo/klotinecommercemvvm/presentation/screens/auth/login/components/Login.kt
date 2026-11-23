@@ -19,9 +19,7 @@ fun Login(navController: NavHostController,vm: LoginViewModel= hiltViewModel()){
     when(val response = vm.loginResponse){
 
         //retornar cuando la repsusta este cargando
-        Resource.Loading ->{
-            ProgressBar()
-        }
+        Resource.Loading ->{}
 
         //cuando la respuesta es exitosa
         is Resource.Success -> {

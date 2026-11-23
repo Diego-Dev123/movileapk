@@ -3,5 +3,6 @@
 
     <style name="Theme.KlotinEcommerceMVVM" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:statusBarColor">@color/Blue_500</item>
+        <item name="android:windowBackground">@color/white</item>
     </style>
 </resources>

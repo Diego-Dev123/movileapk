@@ -7,6 +7,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.dogo.klotinecommercemvvm.domain.util.Resource
+import com.dogo.klotinecommercemvvm.presentation.components.LocalAppMessenger
+import com.dogo.klotinecommercemvvm.presentation.components.MessageType
 import com.dogo.klotinecommercemvvm.presentation.components.ProgressBar
 import com.dogo.klotinecommercemvvm.presentation.navigation.Graph
 import com.dogo.klotinecommercemvvm.presentation.navigation.screen.auth.AuthScreen
@@ -14,12 +16,10 @@ import com.dogo.klotinecommercemvvm.presentation.screens.auth.register.RegisterV
 
 @Composable
 fun Register(navController: NavHostController, vm: RegisterViewModel = hiltViewModel()) {
-
+    val messenger = LocalAppMessenger.current
 
     when (val response = vm.registerResponse) {
-        Resource.Loading -> {
-            ProgressBar()
-        }
+        Resource.Loading -> {}
 
         is Resource.Success -> {
             LaunchedEffect(Unit) {
@@ -32,13 +32,15 @@ fun Register(navController: NavHostController, vm: RegisterViewModel = hiltViewM
             }
         }
 
-        is Resource.Failure -> {
-            Toast.makeText(LocalContext.current, response.message, Toast.LENGTH_LONG).show()
+        is Resource.Failure -> LaunchedEffect(response) {
+            messenger.show(response.message, MessageType.Error)
         }
 
         else -> {
             if (response != null) {
-                Toast.makeText(LocalContext.current, "Error Desconocido", Toast.LENGTH_SHORT).show()
+                LaunchedEffect(response) {
+                    messenger.show("Error desconocido", MessageType.Error)
+                }
             }
         }
 

@@ -6,6 +6,10 @@ import android.content.Intent
 
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.Image
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -81,38 +85,39 @@ fun ProfileContent(paddingValues: PaddingValues, navController: NavHostControlle
         )
         Column(modifier = Modifier.fillMaxWidth()) {
 
-            IconButton(
+            //solo se ofrece cambiar de rol si el usuario tiene más de uno
+            val hasMultipleRoles = (vm.user?.roles?.size ?: 0) > 1
+
+            Row(
                 modifier = Modifier
                     .align(Alignment.End)
                     .padding(top = 15.dp, end = 15.dp),
-                onClick = {
-                    activity?.finish()
-                    activity?.startActivity(Intent(activity, MainActivity::class.java))
-
-                }) {
-                Image(
-                    modifier = Modifier.size(35.dp),
-                    painter = painterResource(id = R.drawable.logout),
-                    contentDescription = "",
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                if (hasMultipleRoles) {
+                    ProfileActionButton(
+                        icon = painterResource(id = R.drawable.ic_group),
+                        description = "Cambiar de rol",
+                        onClick = {
+                            //vuelve a la pantalla de selección de rol sin cerrar la sesión
+                            activity?.finish()
+                            activity?.startActivity(
+                                Intent(activity, MainActivity::class.java)
+                                    .putExtra(MainActivity.EXTRA_ROLE_SWITCH, true)
+                            )
+                        }
+                    )
+                }
+                ProfileActionButton(
+                    icon = rememberVectorPainter(Icons.Default.ExitToApp),
+                    description = "Cerrar sesión",
+                    onClick = {
+                        vm.logout()
+                        activity?.finish()
+                        activity?.startActivity(Intent(activity, MainActivity::class.java))
+                    }
                 )
             }
-
-            IconButton(
-                    modifier = Modifier
-                        .align(Alignment.End)
-                        .padding(top = 15.dp, end = 15.dp),
-            onClick = {
-                vm.logout()
-                activity?.finish()
-                activity?.startActivity(Intent(activity, MainActivity::class.java))
-            }) {
-            Icon(
-                modifier = Modifier.size(35.dp),
-                imageVector = Icons.Default.ExitToApp,
-                contentDescription = "",
-                tint = Color.White
-            )
-        }
 
 
             if (!vm.user?.image.isNullOrBlank()){
@@ -241,4 +246,25 @@ fun ProfileContent(paddingValues: PaddingValues, navController: NavHostControlle
     }
 
 
+}
+
+@Composable
+private fun ProfileActionButton(
+    icon: Painter,
+    description: String,
+    onClick: () -> Unit
+) {
+    IconButton(
+        modifier = Modifier
+            .size(44.dp)
+            .background(Color.Black.copy(alpha = 0.35f), CircleShape),
+        onClick = onClick
+    ) {
+        Icon(
+            modifier = Modifier.size(24.dp),
+            painter = icon,
+            contentDescription = description,
+            tint = Color.White
+        )
+    }
 }

@@ -5,6 +5,7 @@ import com.dogo.klotinecommercemvvm.core.Config.BASE_URL
 import com.dogo.klotinecommercemvvm.data.dataSource.local.dataStore.AuthDataStore
 import com.dogo.klotinecommercemvvm.data.dataSource.remote.service.AuthService
 import com.dogo.klotinecommercemvvm.data.dataSource.remote.service.CategoriesService
+import com.dogo.klotinecommercemvvm.data.dataSource.remote.service.ProductService
 import com.dogo.klotinecommercemvvm.data.dataSource.remote.service.UsersService
 import dagger.Module
 import dagger.Provides
@@ -61,5 +62,12 @@ object NetworModule {
     @Singleton
     fun provideCategoryService(retrofit: Retrofit): CategoriesService {
         return retrofit.create(CategoriesService::class.java)
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideProductService(retrofit: Retrofit): ProductService {
+        return retrofit.create(ProductService::class.java)
     }
 }
